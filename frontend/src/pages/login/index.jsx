@@ -51,7 +51,7 @@ function LoginComponent() {
       <div className={styles.container}>
         <div className={styles.cardContainer}>
           <div className={styles.cardContainer__left}>
-            <p className={styles.cardleft__heading}>
+            <p className={styles.cardleft__heading}>a
               {userLoginMethod ? "Sign In" : "Sign Up"}
             </p>
             
