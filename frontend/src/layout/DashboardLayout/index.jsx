@@ -1,4 +1,3 @@
-
 import {React,useEffect} from 'react'
 import { useRouter } from 'next/router';
 
@@ -18,9 +17,10 @@ const dispatch=useDispatch();
      useEffect(()=>{
                 if(localStorage.getItem('token')===null){
                     router.push("/login")
+                } else {
+                    dispatch(setTokenIsThere())
                 }
-                dispatch(setTokenIsThere())
-            })
+            }, [])
 
 
   return (
