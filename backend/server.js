@@ -40,7 +40,7 @@ app.use((req, res) => {
 
 const start = async () => {
     try {
-        await mongoose.connect("mongodb://localhost:27017/connectsocially");
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("--> Connected to MongoDB successfully");
 
         const PORT = process.env.PORT || 9090;
