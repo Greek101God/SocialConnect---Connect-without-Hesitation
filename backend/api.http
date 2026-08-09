@@ -1,0 +1,65 @@
+POST http://localhost:9090/user/register HTTP/1.1
+content-Type: application/json
+
+{
+    "name":"sam choudhary",
+    "email":"sam@example.com",
+    "password":"54321",
+    "username":"choud-sam"
+    }
+
+###
+
+### Login Request
+POST http://localhost:9090/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "sameer@example.com",
+  "password": "12345"
+}
+
+###
+POST http://localhost:9090/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "sam@example.com",
+  "password": "54321"
+}
+
+###
+
+POST http://localhost:9090/user/get_user_and_profile
+Content-Type : application/json
+
+{
+    "token":"28e68874958e5022d7ccd5f641f5e4c0a293f914bb7c3e1be724b53f35c83ecb"
+     }
+
+###
+
+POST http://localhost:9090/user/update_profile_data
+Content-Type : application/json
+
+{
+    "token":"c1931fb0904f1ce4ddb897540959f09e17e939c0ef1c773b8cdcd25d52d876a6",
+    "bio":"Hey I am Mani and I want to be a successful businessman",
+    "currentPost":"CTrO",
+    "pastWork":[
+        {
+            "company":"Microsoft",
+            "position":"CTrrO",
+            "years":"2+"
+        }
+    ],
+    "education":[
+        {
+            "school":"IIT",
+            "degree":"B.Tech",
+            "fieldOfStudy":"2015-2019"
+        }
+    ]
+}
+###
+GET http://localhost:9090/user/get_all_profiles

@@ -1,0 +1,288 @@
+.container{
+    padding: 1.3rem;
+    background:rgb(245, 243, 243);
+    display: flex;
+    flex-direction: column;
+    gap:1.2rem;
+}
+
+.backDropContainer{
+    width: 100%;
+    height: 30vh;
+    background:url("https://images.pexels.com/photos/32730210/pexels-photo-32730210.jpeg?_gl=1*1fosjlu*_ga*MTA3MTAzMDM1MC4xNzg1NzYwNjcw*_ga_8JE65Q40S6*czE3ODU3NjI4NzYkbzIkZzEkdDE3ODU3NjMzMjUkajIzJGwwJGgw");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position:relative;
+    border-radius: 20px;
+}
+.card__profileContainer{
+    display: flex;
+    width: 100%;
+}
+
+.card__profileContainer img{
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.backDropContainer img{
+     width: 10em;
+     height: 10em;
+     object-fit: cover;
+     border-radius: 50%;
+     position:absolute;
+     bottom: -30%;
+     left:8%;
+     text-align: center;
+     border: 4px solid white;
+     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.profileContainer__details{
+     margin-top: 6rem;
+     padding: 0 1.5rem 2rem 1.5rem;
+     background: white;
+     border-radius: 0 0 20px 20px;
+}
+
+.conectionBtn{
+     background-color: #1d4ed8;
+     color: white;
+     border: none;
+     padding: 0.5rem 1.5rem;
+     border-radius: 20px;
+     font-weight: 600;
+     cursor: pointer;
+     margin-top: 0.5rem;
+     transition: background-color 0.2s ease;
+}
+
+.conectionBtn:hover{
+     background-color: #1e3a8a;
+}
+
+.connectedButton{
+     background-color: #e5e7eb;
+     color: #374151;
+     border: none;
+     padding: 0.5rem 1.5rem;
+     border-radius: 20px;
+     font-weight: 600;
+     cursor: default;
+     margin-top: 0.5rem;
+}
+
+/* ===== Recent Activity section ===== */
+.activityContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 220px;
+    max-width: 260px;
+}
+
+.activityContainer h3{
+    margin-bottom: 0.3rem;
+}
+
+.postCard{
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 0.9rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.card{
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 0.6rem;
+}
+
+.card__profileContainer{
+    display: flex;
+    width: 100%;
+}
+
+.card p{
+    margin: 0;
+    color: #1f2937;
+    font-size: 0.95rem;
+    line-height: 1.3rem;
+}
+
+.workHistoryContainer{
+    display: flex;
+    gap:1.4rem;
+    padding-top: 1.4rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.workHistoryCard{
+    min-width: fit-content;
+    padding-inline: 2.5rem;
+    padding-block: 1rem;
+    padding-radius: 10px;
+    box-shadow: 10px 10px 15px rgb(173,173,173);
+}
+
+.backDrop__overLay{
+    width:10rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    bottom:-30%;
+    left:8%;
+    text-align:center;
+    transition: all 0.4s;
+    z-index:4;
+    cursor: pointer;
+    color: white;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backDrop__overLay:hover{
+    opacity: 0.6;
+    background: black;
+}
+
+.profileContainer__details input{
+    outline:none;
+    border-style: none;
+    padding-inline: 10px;
+    padding-block: 9px;
+    width:fit-content;
+}
+
+.nameEdit{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.profileContainer__details textarea{
+    outline:none;
+    border:none;
+    padding-inline: 10px;
+    padding-block: 9px;
+    font-family: "Poppins" !important;
+    font-size: 1.1rem;
+}
+
+.actionButton{
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+    font-family: "Poppins", sans-serif;
+    width: fit-content;
+}
+
+.actionButton:active{
+    transform: scale(0.97);
+}
+
+.actionButton--primary{
+    background-color: #1448af;
+    color: white;
+}
+.actionButton--primary:hover{
+    background-color: #0f3585;
+}
+
+.actionButton--secondary{
+    background-color: #e5e7eb;
+    color: #374151;
+}
+.actionButton--secondary:hover{
+    background-color: #d1d5db;
+}
+
+
+.actionButton--ghost{
+    background-color: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+.actionButton--ghost:hover{
+    background-color: #f3f4f6;
+}
+
+
+.actionButton--danger{
+    background-color: transparent;
+    color: #dc2626;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
+}
+.actionButton--danger:hover{
+    background-color: #fef2f2;
+}
+
+
+.actionButton--sm{
+    padding: 0.35rem 1rem;
+    font-size: 0.8rem;
+}
+
+
+.buttonRow{
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+
+.sectionHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+
+.editEntryForm{
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 200px;
+}
+
+.editEntryForm input{
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Update Profile button  */
+.updateProfileButton{
+    background-color: #1448af;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.6rem;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    width: fit-content;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-family: "Poppins", sans-serif;
+}
+.updateProfileButton:hover{
+    background-color: #0f3585;
+}
+.updateProfileButton:active{
+    transform: scale(0.97);
+}
+

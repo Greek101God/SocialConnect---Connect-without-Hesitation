@@ -1,0 +1,159 @@
+.container{
+    display: flex;
+    justify-content: center;
+    height: 90svh;
+    align-items: center;
+    background: snow;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.cardContainer{
+    height: 80vh;
+    display: flex;
+    overflow: hidden;
+    width: 80vw;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 10px 10px 15px rgb(173,173,173);
+}
+
+.cardContainer__left{
+    flex: 0.7;
+    padding: 2rem;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.cardleft__heading{
+    font-weight: bold;
+    font-size: 1.6rem;
+}
+
+.inputField{
+    padding-inline: 1.3rem;
+    padding-block: 0.8rem;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid silver;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem; 
+}
+
+.inputContainers{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1.3rem;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 1.5rem;
+    box-sizing: border-box;
+}
+
+.inputRow{
+    width: 100%;
+    display: flex;
+    gap: 1.2rem;
+}
+
+.inputRow > .inputField{
+    flex: 1;
+    min-width: 0; 
+}
+
+.buttonWithOutline{
+    padding: 0.8rem 1.3rem;
+    background: rgb(236,236,236);
+    width: 100%;
+    border: 2px solid rgb(139, 132, 132);
+    border-radius: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.buttonWithOutline:hover{
+    background: rgb(224,224,224);
+}
+
+.buttonWithOutline:active{
+    transform: scale(0.98);
+}
+
+.cardContainer__right{
+    flex: 0.3;
+    background: #00488B;
+    display: flex;
+    justify-content: center;
+    color: white;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding-inline: 1.2rem;
+    text-align: center;
+}
+
+.loginhead{
+    cursor: pointer;
+}
+
+
+/* ===== Tablet ===== */
+@media only screen and (max-width: 900px){
+    .cardContainer{
+        width: 92vw;
+    }
+    .cardContainer__left{
+        padding: 1.5rem;
+    }
+}
+
+/* ===== Mobile ===== */
+@media only screen and (max-width: 600px){
+    .container{
+        height: auto;
+        min-height: 100svh;
+        padding: 1.5rem 1rem;
+    }
+    .cardContainer{
+        display: flex;
+        flex-direction: column;
+        height: auto;      
+        width: 100%;
+        box-shadow: none;  
+        border-radius: 14px;
+    }
+    .cardContainer__left{
+        padding: 1.8rem 1.2rem;
+        overflow-y: visible;
+    }
+    .cardleft__heading{
+        font-size: 1.4rem;
+    }
+    .inputContainers{
+        gap: 1.1rem;
+        padding-top: 1rem;
+    }
+    .inputRow{
+        flex-direction: column; 
+        gap: 1.1rem;
+    }
+    .cardContainer__right{
+        padding: 1.6rem 1.2rem;
+        gap: 1rem;
+    }
+}
+
+
+@media only screen and (max-width: 360px){
+    .cardContainer__left{
+        padding: 1.4rem 1rem;
+    }
+    .cardleft__heading{
+        font-size: 1.25rem;
+    }
+}

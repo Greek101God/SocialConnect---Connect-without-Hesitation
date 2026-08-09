@@ -1,0 +1,159 @@
+.container{
+    padding: 1.3rem;
+    background:rgb(245, 243, 243);
+    display: flex;
+    flex-direction: column;
+    gap:1.2rem;
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+.backDropContainer{
+    width: 100%;
+    height: 30vh;
+    background:url("https://images.pexels.com/photos/32730210/pexels-photo-32730210.jpeg?_gl=1*1fosjlu*_ga*MTA3MTAzMDM1MC4xNzg1NzYwNjcw*_ga_8JE65Q40S6*czE3ODU3NjI4NzYkbzIkZzEkdDE3ODU3NjMzMjUkajIzJGwwJGgw");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position:relative;
+    border-radius: 20px;
+}
+
+.backDropContainer img{
+     width: 10em;
+     height: 10em;
+     object-fit: cover;
+     border-radius: 50%;
+     position:absolute;
+     bottom: -30%;
+     left:8%;
+     text-align: center;
+     border: 4px solid white;
+     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.profileContainer__details{
+     margin-top: 6rem;
+     padding: 0 1.5rem 2rem 1.5rem;
+     background: white;
+     border-radius: 0 0 20px 20px;
+}
+
+.conectionBtn{
+     background-color: #1d4ed8;
+     color: white;
+     border: none;
+     padding: 0.5rem 1.5rem;
+     border-radius: 20px;
+     font-weight: 600;
+     cursor: pointer;
+     margin-top: 0.5rem;
+     transition: background-color 0.2s ease;
+}
+
+.conectionBtn:hover{
+     background-color: #1e3a8a;
+}
+
+.connectedButton{
+     background-color: #e5e7eb;
+     color: #374151;
+     border: none;
+     padding: 0.5rem 1.5rem;
+     border-radius: 20px;
+     font-weight: 600;
+     cursor: default;
+     margin-top: 0.5rem;
+}
+
+/* ===== Recent Activity section ===== */
+.activityContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 220px;
+    max-width: 260px;
+}
+
+.activityContainer h3{
+    margin-bottom: 0.3rem;
+}
+
+.postCard{
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 0.9rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.card{
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 0.6rem;
+}
+
+.card__profileContainer{
+    display: flex;
+    width: 100%;
+}
+
+.card__profileContainer > img{
+    width: 100%;
+    height: 8rem;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.card p{
+    margin: 0;
+    color: #1f2937;
+    font-size: 0.95rem;
+    line-height: 1.3rem;
+}
+
+.workHistoryContainer{
+    display: flex;
+    gap:1.4rem;
+    padding-top: 1.4rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.workHistoryCard{
+    min-width: fit-content;
+    padding-inline: 2.5rem;
+    padding-block: 1rem;
+    padding-radius: 10px;
+    box-shadow: 10px 10px 15px rgb(173,173,173);
+}
+
+.profileContainer__flex{
+    display: flex;
+    gap: 0.7rem;
+}
+
+/* spacer that separates main content from the activity column on desktop */
+.flexSpacer{
+    flex: 0.2;
+}
+
+@media only screen and (max-width:600px){
+    .profileContainer__flex{
+        flex-direction: column;
+    }
+    .flexSpacer{
+        display: none;
+    }
+    .activityContainer{
+        max-width: 100%;
+        min-width: 0;
+    }
+    .workHistoryCard{
+        padding-inline: 1.2rem;
+    }
+    .backDropContainer img{
+        width: 7em;
+        height: 7em;
+    }
+}

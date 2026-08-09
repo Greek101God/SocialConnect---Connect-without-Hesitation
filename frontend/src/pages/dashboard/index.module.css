@@ -1,0 +1,387 @@
+.scrollComponent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 2rem; /* Creates clean spacing between post-box and post feed */
+}
+
+.createPostContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 10svh;
+    width: 70%;
+    padding-inline: 0.8rem;
+    position: relative;
+    box-sizing: border-box;
+    background: rgb(238, 238, 237);
+    border-radius: 20px;
+}
+
+.uploadButton {
+    position: absolute;
+    right: 0;
+    bottom: -50%;
+    background: #0b4382;
+    color: white;
+    border-radius: 10px;
+    padding-inline: 1.2rem;
+    padding-block: 0.8rem;
+    cursor: pointer;
+}
+
+/* Fixed size profile picture */
+.userProfile {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Flexible Text Area */
+.createPostContainer > textarea,
+.textArea {
+    flex: 1;
+    height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-family: inherit;
+    padding: 0.8rem 1rem;
+    resize: none;
+    box-sizing: border-box;
+}
+
+/* File Upload Button */
+.createPostContainer label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.Fab {
+    background-color: #0b4382;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.Fab:hover {
+    background-color: #083262;
+}
+
+.Fab > svg {
+    width: 22px;
+    height: 22px;
+    stroke: #ffffff;
+    stroke-width: 2;
+}
+
+
+
+.postsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 70%; /* Matches createPostContainer width */
+    gap: 1.5rem;
+}
+
+/* ===== Single post card (merged — was previously defined twice) ===== */
+.singleCard {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+.singleCard__profileContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    font-weight: 600;
+}
+
+.singleCard__profileContainer > img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.singleCard__image{
+    width: 100%;
+    padding-top: 0.6rem;
+    height: fit-content;
+    overflow: hidden;
+}
+
+.singleCard__image > img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.optionsContainer{
+    display: flex;
+    align-items: center;
+    padding-block: 0.8rem;
+    gap: 1rem;
+}
+
+.singleOption__optionsContainer{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    padding-left: 2rem;
+}
+
+.singleOption__optionsContainer > svg{
+    height: 100%;
+    width: 15%;
+    min-width: 1rem;
+}
+
+.commentsContainer{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(0,0,0,0.7);
+    overflow: hidden;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.allCommentsContainer{
+    min-width: 40svw;
+    max-width: 1120px;
+    height: 80vh;
+    background: white;
+    border-radius: 50px;
+    position: relative;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden; /* keeps the rounded corners clean; inner area handles scrolling */
+}
+
+/* Scrollable comments list — only this area gets a scrollbar */
+.commentsScrollArea{
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0; /* required so this flex child can actually shrink and scroll */
+    padding-right: 0.4rem; /* small gutter so text doesn't sit under the scrollbar */
+}
+
+.commentsScrollArea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.commentsScrollArea::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.singleComment{
+    padding-block: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.singleComment__profileContainer{
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.singleComment__profileContainer > img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    background-color: #e0e0e0;
+    flex-shrink: 0;
+}
+
+.singleComment__textContent{
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.commentActions{
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding-top: 0.5rem;
+}
+
+.commentActions__action{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    color: gray;
+    cursor: pointer;
+}
+
+.commentActions__action > svg{
+    height: 1.1em;
+    width: 1.1em;
+}
+
+.commentActions__action:hover{
+    color: #0b4382;
+}
+
+.replyInputContainer{
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.6rem;
+}
+
+.replyInputContainer > input{
+    flex: 1;
+    padding-inline: 1rem;
+    padding-block: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid gray;
+    background-color: #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.replyInputContainer > input:focus{
+    border: 1px solid silver;
+}
+
+.replyInputContainer__btn{
+    padding: 0.6rem 1rem;
+    background: rgb(31, 31, 136);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.repliesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-top: 0.8rem;
+    padding-left: 1rem;
+    border-left: 2px solid #eee;
+    margin-top: 0.4rem;
+}
+
+.singleReply{
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+.singleReply > img{
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background-color: #e0e0e0;
+}
+
+.postCommentContainer{
+    flex-shrink: 0; /* pins this to the bottom, never scrolls with the list */
+    width: 100%;
+    padding-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    box-sizing: border-box;
+}
+
+.postCommentContainer > input{
+    flex: 0.9;
+    padding-inline: 1.5rem;
+    padding-block: 1.2rem;
+    border-radius: 10px;
+    border: 1px solid gray;
+    background-color: #e0e0e0;
+}
+
+.postCommentContainer > input:focus{
+    border: 1px solid silver;
+}
+
+.postCommentContainer__commentBtn{
+    flex: 0.1;
+    width: fit-content;
+    padding: 1.2rem;
+    background: rgb(31, 31, 136);
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 600px){
+    .createPostContainer{
+        width: 100%;
+        height: auto;
+        flex-wrap: wrap;
+        padding-block: 0.8rem;
+    }
+    .uploadButton{
+        position: static; /* was absolutely positioned off the bottom — breaks on narrow cards */
+        margin-top: 0.6rem;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .postsContainer{
+        width: 100%;
+    }
+    .singleCard__profileContainer > img{
+        width: 38px;
+        height: 38px;
+    }
+    .allCommentsContainer{
+        width: 90%;
+        min-width: 0;
+        height: 85vh;
+        border-radius: 24px; /* 50px reads as too round on a near-full-width mobile modal */
+        padding: 1rem;
+    }
+    .postCommentContainer{
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+    .postCommentContainer > input{
+        flex: 1 1 100%;
+    }
+    .postCommentContainer__commentBtn{
+        flex: 1 1 100%;
+    }
+}
