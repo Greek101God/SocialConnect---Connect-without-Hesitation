@@ -14,7 +14,7 @@ import {
   getAboutUser,
 } from '@/config/redux/action/authAction';
 
-
+// TODO: replace with your actual Cloudinary default avatar URL after uploading one
 const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
 
 const getProfilePic = (pic) => {
@@ -79,11 +79,11 @@ export default function ViewProfilePage({ userProfile, fetchError }) {
     setIsOwnProfile(false);
 
     const receivedMatch = authState.connections?.find(
-      (u) => u.userId._id === targetId
+      (u) => u.userId && u.userId._id === targetId
     );
 
     const sentMatch = authState.connectionRequest?.find(
-      (u) => u.connectionId._id === targetId
+      (u) => u.connectionId && u.connectionId._id === targetId
     );
 
     const match = receivedMatch || sentMatch;
