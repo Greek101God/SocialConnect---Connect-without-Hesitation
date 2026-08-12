@@ -64,7 +64,6 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.loggedIn = true;
                 state.message = {
                     message :"Registration is Successfull, Please login "
                 }
