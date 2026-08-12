@@ -1,29 +1,29 @@
-import {Router} from "express";
+import { Router } from "express";
 import multer from 'multer';
-import { getAllPosts , deletePost , activeCheck, createPost,incrementPostLike } from "../controllers/posts.controller.js";
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from "../config/cloudinary.js";
+import { getAllPosts, deletePost, activeCheck, createPost, incrementPostLike } from "../controllers/posts.controller.js";
 import { commentPost, delete_comment_of_user, get_comments_by_post, incremenet_likes, incrementCommentLike, replyToComment } from "../controllers/user.controller.js";
 
 
-const router=Router();
+const router = Router();
 
-const storage=multer.diskStorage({
-    destination:(req,file,cb)=>{
-        cb(null,'uploads/')
-        },
-        filename:(req,file,cb)=>{
-            cb(null,file.originalname)
-        },
-})
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "social-connect",
+        allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+    },
+});
 
-
-const upload=multer({storage:storage});
+const upload = multer({ storage });
 
 router.route('/status').get(activeCheck);
 
 
 router.route('/')
-.get(getAllPosts)
-.post(upload.single('media'),createPost);
+    .get(getAllPosts)
+    .post(upload.single('media'), createPost);
 
 
 router.route("/delete_post").delete(deletePost);
