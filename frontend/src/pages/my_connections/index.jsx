@@ -8,6 +8,13 @@ import styles from "./index.module.css";
 import { BASE_URL } from '@/config';
 import { useRouter } from 'next/router';
 
+const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
+
+const getProfilePic = (pic) => {
+  if (!pic || !pic.startsWith("http")) return DEFAULT_AVATAR;
+  return pic;
+};
+
 export default function MyConnectionsPage() {
 
   const dispatch = useDispatch();
@@ -57,7 +64,7 @@ export default function MyConnectionsPage() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", justifyContent: "space-between" }}>
                 <div className={styles.profilePicture}>
-                  <img src={`${BASE_URL}/uploads/${connection.user.profilePicture || "default.jpg"}`} alt="backdrop" />
+                  <img src={getProfilePic(connection.user.profilePicture)} alt="backdrop" />
                 </div>
                 <div className={styles.userInfo}>
                   <h3>{connection.user.name}</h3>
@@ -89,7 +96,7 @@ export default function MyConnectionsPage() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", justifyContent: "space-between" }}>
                 <div className={styles.profilePicture}>
-                  <img src={`${BASE_URL}/uploads/${connection.user.profilePicture || "default.jpg"}`} alt="backdrop" />
+                  <img src={getProfilePic(connection.user.profilePicture)} alt="backdrop" />
                 </div>
                 <div className={styles.userInfo}>
                   <h3>{connection.user.name}</h3>
@@ -110,7 +117,7 @@ export default function MyConnectionsPage() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", justifyContent: "space-between" }}>
                 <div className={styles.profilePicture}>
-                  <img src={`${BASE_URL}/uploads/${entry.user.profilePicture || "default.jpg"}`} alt="backdrop" />
+                  <img src={getProfilePic(entry.user.profilePicture)} alt="backdrop" />
                 </div>
                 <div className={styles.userInfo}>
                   <h3>{entry.user.name}</h3>

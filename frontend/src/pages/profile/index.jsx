@@ -8,6 +8,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { getAllPosts } from '@/config/redux/action/postAction'
 
+const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
+
+const getProfilePic = (pic) => {
+  if (!pic || !pic.startsWith("http")) return DEFAULT_AVATAR;
+  return pic;
+};
+
 
 export default function profilePage() {
 
@@ -140,7 +147,7 @@ export default function profilePage() {
               <input onChange={(e) => {
                 updateProfilePicture(e.target.files[0])
               }} hidden type="file" id='profilePictureUpload' />
-              <img src={`${BASE_URL}/uploads/${userProfile.userId.profilePicture || "default.jpg"}`} alt="backdrop" />
+              <img src={getProfilePic(userProfile.userId.profilePicture)} alt="backdrop" />
             </div>
 
             <div className={styles.profileContainer__details}>
@@ -344,7 +351,7 @@ export default function profilePage() {
                         <div className={styles.card}>
                           <div className={styles.card__profileContainer}>
                             {post.media !== "" ? (
-                              <img src={`${BASE_URL}/uploads/${post.media}`} alt="post_img" />
+                              <img src={post.media} alt="post_img" />
                             ) : null}
                           </div>
                           <p>{post.body}</p>
