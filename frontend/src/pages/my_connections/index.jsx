@@ -28,21 +28,21 @@ export default function MyConnectionsPage() {
 
   // Requests I SENT that are still pending (other person hasn't accepted yet) — no Accept button, just "Pending"
   const sentPending = authState.connectionRequest
-    .filter((c) => c.status_accepted === null)
+    .filter((c) => c.status_accepted === null && c.connectionId)
     .map((c) => ({ _id: c._id, user: c.connectionId }));
 
   // Requests I RECEIVED that are still pending — these get the Accept button
   const receivedPending = authState.connections
-    .filter((c) => c.status_accepted === null)
+    .filter((c) => c.status_accepted === null && c.userId)
     .map((c) => ({ _id: c._id, user: c.userId }));
 
   // Accepted connections from both directions, merged into one "My Network" list
   const sentAccepted = authState.connectionRequest
-    .filter((c) => c.status_accepted === true)
+    .filter((c) => c.status_accepted === true && c.connectionId)
     .map((c) => ({ _id: c._id, user: c.connectionId }));
 
   const receivedAccepted = authState.connections
-    .filter((c) => c.status_accepted === true)
+    .filter((c) => c.status_accepted === true && c.userId)
     .map((c) => ({ _id: c._id, user: c.userId }));
 
   const myNetwork = [...sentAccepted, ...receivedAccepted];
