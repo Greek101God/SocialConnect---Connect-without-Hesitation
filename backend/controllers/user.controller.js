@@ -188,21 +188,20 @@ export const downloadProfile = async (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'inline; filename="resume.pdf"');
 
-            const doc = new PDFDocument();
-            doc.pipe(res);
+        const doc = new PDFDocument();
+        doc.pipe(res);
 
-                    if (userProfile.userId.profilePicture) {
-                try {
-            const response = await fetch(userProfile.userId.profilePicture);
-            const arrayBuffer = await response.arrayBuffer();
-            const imgBuffer = Buffer.from(arrayBuffer);
-            doc.image(imgBuffer, { align: "center", width: 100 });
-            doc.moveDown();
+        if (userProfile.userId.profilePicture && userProfile.userId.profilePicture.startsWith("http")) {
+            try {
+                const response = await fetch(userProfile.userId.profilePicture);
+                const arrayBuffer = await response.arrayBuffer();
+                const imgBuffer = Buffer.from(arrayBuffer);
+                doc.image(imgBuffer, { align: "center", width: 100 });
+                doc.moveDown();
             } catch (err) {
-            doc.fontSize(12).text("[Profile Image Error]", { align: "center" });
+                doc.fontSize(12).text("[Profile Image Error]", { align: "center" });
+            }
         }
-    }
-        
 
         doc.fontSize(18).text("User Profile Document", { align: "center" }).moveDown();
         doc.fontSize(14).text(`Name : ${userProfile.userId.name || 'N/A'}`);
