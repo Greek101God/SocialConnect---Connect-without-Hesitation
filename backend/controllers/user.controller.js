@@ -153,18 +153,30 @@ export const updateProfileData = async (req, res) => {
 };
 
 
+// =========================================================================
+// GET ALL USER PROFILES (e.g. "Top Profiles" list)
+// FIX: Filters out profiles whose linked user no longer exists (orphaned
+// documents caused populate('userId', ...) to return null, which crashed
+// the frontend and showed "Anonymous User" as a fallback).
+// =========================================================================
 export const getAllUserProfile = async (req, res) => {
     try {
         const profiles = await Profile.find()
             .populate('userId', 'name username email profilePicture');
-        return res.json({ profiles });
+
+        // Drop any profile whose referenced user no longer exists
+        const validProfiles = profiles.filter(profile => profile.userId !== null);
+
+        return res.json({ profiles: validProfiles });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
 
-
+// =========================================================================
+// DOWNLOAD PROFILE (PDF RESUME)
+// =========================================================================
 export const downloadProfile = async (req, res) => {
     try {
         const user_id = req.query.id;
@@ -224,7 +236,10 @@ export const downloadProfile = async (req, res) => {
 };
 
 
-
+// =========================================================================
+// SEND CONNECTION REQUEST
+// FIX: Removed stray "a" typo in the catch block declaration.
+// =========================================================================
 export const sendConnectionRequest = async (req, res) => {
     const { token, connectionId } = req.body;
 
@@ -257,8 +272,7 @@ export const sendConnectionRequest = async (req, res) => {
         await request.save();
 
         return res.json({ message: "Request Sent" });
-    } catch (error) {a
-        
+    } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
@@ -308,6 +322,9 @@ export const whatAreMyConnections = async (req, res) => {
 };
 
 
+// =========================================================================
+// ACCEPT / REJECT CONNECTION REQUEST
+// =========================================================================
 export const acceptConnectionRequest = async (req, res) => {
     const { token, requestId, action_type } = req.body;
 
@@ -324,10 +341,10 @@ export const acceptConnectionRequest = async (req, res) => {
 
         if (action_type === "accept") {
             connection.status_accepted = true;
-        } else if(action_type==="reject"){
+        } else if (action_type === "reject") {
             connection.status_accepted = false;
-        }else{
-            return res.status(400).json({message:"Invalid action_type"});
+        } else {
+            return res.status(400).json({ message: "Invalid action_type" });
         }
 
         await connection.save();
@@ -338,39 +355,44 @@ export const acceptConnectionRequest = async (req, res) => {
 };
 
 
-export const commentPost =async(req,res)=>{
-    const {token,post_id,commentBody} =req.body;
-    
-    try{
-        const user=await User.findOne({token:token}).select("_id");
-        if(!user){
-            return res.status(404).json({message:"User not found"})
+// =========================================================================
+// COMMENT ON POST
+// =========================================================================
+export const commentPost = async (req, res) => {
+    const { token, post_id, commentBody } = req.body;
+
+    try {
+        const user = await User.findOne({ token: token }).select("_id");
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const post = await Post.findOne({
+            _id: post_id
+        });
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const comment = new Comment({
+            userId: user._id,
+            postId: post._id,
+            body: commentBody
+        });
+
+        await comment.save();
+        return res.status(200).json({ message: "Comment saved" });
     }
-
-        const post=await Post.findOne({
-        _id: post_id
-    });
-
-        if(!post){
-        return res.status(404).json({message:"Post not found"});
-    }
-
-    const comment=new Comment({
-        userId:user._id,
-        postId:post._id,
-        body:commentBody
-    });
-
-    await comment.save();
-    return res.status(200).json({message:"Comment saved"});
-    }
-
-    catch(error){
-        return res.status(500).json({message:error.message});
+    catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
 
+// =========================================================================
+// GET COMMENTS BY POST
+// =========================================================================
 export const get_comments_by_post = async (req, res) => {
     const { post_id } = req.query;
     try {
@@ -395,100 +417,112 @@ export const get_comments_by_post = async (req, res) => {
 }
 
 
-export const delete_comment_of_user=async(req,res)=>{
-    const {token,comment_id}=req.body;
-    try{
+// =========================================================================
+// DELETE COMMENT (OWN COMMENTS ONLY)
+// =========================================================================
+export const delete_comment_of_user = async (req, res) => {
+    const { token, comment_id } = req.body;
+    try {
 
-        const user=await User.findOne({token:token}).select("_id");
+        const user = await User.findOne({ token: token }).select("_id");
 
-        if(!user){
-            return res.status(404).json({message:"User not found"});
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
 
-        const comment=await Comment.findOne({"_id":comment_id});
+        const comment = await Comment.findOne({ "_id": comment_id });
 
-        if(!comment){
-            return res.status(404).json({message:"Comment not found"});
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found" });
         }
 
-        if(comment.userId.toString()!==user._id.toString()){
-            return res.status(401).json({message:"Unauthorized"});
+        if (comment.userId.toString() !== user._id.toString()) {
+            return res.status(401).json({ message: "Unauthorized" });
         }
 
-        await Comment.deleteOne({"_id":comment_id});
+        await Comment.deleteOne({ "_id": comment_id });
 
-        return res.json({message:"Comment deleted"});
+        return res.json({ message: "Comment deleted" });
 
     }
-    catch(error){
-        return res.status(500).json({message:error.message});
+    catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
 
-export const incremenet_likes=async(req,res)=>{
+// =========================================================================
+// INCREMENT POST LIKES
+// =========================================================================
+export const incremenet_likes = async (req, res) => {
 
+    const { post_id } = req.body;
+    try {
 
-    const {post_id}=req.body;
-    try{
+        const post = await Post.findOne({ _id: post_id });
 
-        const post=await Post.findOne({_id:post_id});
-
-        if(!post){
-            return res.status(404).json({message:"Post not found"});
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
         }
-        post.likes=post.likes + 1;
+        post.likes = post.likes + 1;
 
         await post.save();
 
-        return res.json({message:"Likes Incremented"});
+        return res.json({ message: "Likes Incremented" });
 
     }
-    catch(error){
-        return res.status(500).json({message:error.message});
+    catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
-export const incrementCommentLike=async(req,res)=>{
 
-    const {comment_id}=req.body;
-    try{
+// =========================================================================
+// INCREMENT COMMENT LIKES
+// =========================================================================
+export const incrementCommentLike = async (req, res) => {
 
-        const comment=await Comment.findOne({_id:comment_id});
+    const { comment_id } = req.body;
+    try {
 
-        if(!comment){
-            return res.status(404).json({message:"Comment not found"});
+        const comment = await Comment.findOne({ _id: comment_id });
+
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found" });
         }
 
         comment.likes = comment.likes + 1;
         await comment.save();
 
-        return res.json({message:"Comment like incremented", likes: comment.likes});
+        return res.json({ message: "Comment like incremented", likes: comment.likes });
 
     }
-    catch(error){
-        return res.status(500).json({message:error.message});
+    catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
 
-export const replyToComment=async(req,res)=>{
+// =========================================================================
+// REPLY TO COMMENT
+// =========================================================================
+export const replyToComment = async (req, res) => {
 
-    const {token,comment_id,body}=req.body;
-    try{
+    const { token, comment_id, body } = req.body;
+    try {
 
-        if(!body || body.trim()===""){
-            return res.status(400).json({message:"Reply body is required"});
+        if (!body || body.trim() === "") {
+            return res.status(400).json({ message: "Reply body is required" });
         }
 
-        const user=await User.findOne({token:token}).select("_id");
-        if(!user){
-            return res.status(404).json({message:"User not found"});
+        const user = await User.findOne({ token: token }).select("_id");
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
 
-        const comment=await Comment.findOne({_id:comment_id});
-        if(!comment){
-            return res.status(404).json({message:"Comment not found"});
+        const comment = await Comment.findOne({ _id: comment_id });
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found" });
         }
 
         comment.replies.push({
@@ -498,36 +532,75 @@ export const replyToComment=async(req,res)=>{
 
         await comment.save();
 
-        const updatedComment = await Comment.findOne({_id:comment_id})
+        const updatedComment = await Comment.findOne({ _id: comment_id })
             .populate('replies.userId', 'name username profilePicture');
 
         const newReply = updatedComment.replies[updatedComment.replies.length - 1];
 
-        return res.json({message:"Reply added", reply: newReply});
+        return res.json({ message: "Reply added", reply: newReply });
 
     }
-    catch(error){
-        return res.status(500).json({message:error.message});
+    catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
 
-export const getUserProfileAndUserBasedOnUsernme=async(req,res)=>{
-    const {username}=req.query;
+// =========================================================================
+// GET USER PROFILE BASED ON USERNAME
+// =========================================================================
+export const getUserProfileAndUserBasedOnUsernme = async (req, res) => {
+    const { username } = req.query;
 
-    try{
-        const user=await User.findOne({
+    try {
+        const user = await User.findOne({
             username
         });
-        if(!user){
-            return res.status(404).json({message:"User not found"});
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
-        const userProfile=await Profile.findOne({userId:user._id})
-        .populate('userId','name username email profilePicture');
+        const userProfile = await Profile.findOne({ userId: user._id })
+            .populate('userId', 'name username email profilePicture');
 
-        return res.json({"profile":userProfile})
+        return res.json({ "profile": userProfile })
     }
-    catch(err){
-        return res.status(500).json({message:err.message})
+    catch (err) {
+        return res.status(500).json({ message: err.message })
     }
 }
+
+
+// =========================================================================
+// DELETE USER (NEW)
+// Cascades deletion to the user's profile, connection requests, and
+// comments so no orphaned documents are left behind (this is what caused
+// the "Anonymous User" bug — profiles were left behind after a user was
+// deleted directly from the database).
+// =========================================================================
+export const deleteUser = async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const user = await User.findOne({ token });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        await Profile.deleteOne({ userId: user._id });
+
+        await ConnectionRequest.deleteMany({
+            $or: [{ userId: user._id }, { connectionId: user._id }]
+        });
+
+        await Comment.deleteMany({ userId: user._id });
+
+        // Note: if you also want to delete this user's posts, uncomment:
+        // await Post.deleteMany({ userId: user._id });
+
+        await User.deleteOne({ _id: user._id });
+
+        return res.json({ message: "User and related data deleted" });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
