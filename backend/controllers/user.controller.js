@@ -3,8 +3,6 @@ import User from "../models/user.model.js";
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import PDFDocument from 'pdfkit';
-import fs from 'fs';
-import path from 'path';
 import ConnectionRequest from "../models/connections.model.js";
 import Post from "../models/posts.model.js";
 import Comment from "../models/comments.model.js";
@@ -76,7 +74,7 @@ export const uploadProfilePicture = async (req, res) => {
         const user = await User.findOne({ token });
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        user.profilePicture = req.file.filename;
+        user.profilePicture = req.file.path;
         await user.save();
 
         return res.json({ message: "Profile Picture updated" });
@@ -84,8 +82,6 @@ export const uploadProfilePicture = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
-
 // =========================================================================
 // UPDATE USER PROFILE
 // =========================================================================
@@ -192,21 +188,21 @@ export const downloadProfile = async (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'inline; filename="resume.pdf"');
 
-        const doc = new PDFDocument();
-        doc.pipe(res);
+            const doc = new PDFDocument();
+            doc.pipe(res);
 
-        if (userProfile.userId.profilePicture) {
-            const imgPath = path.resolve('uploads', userProfile.userId.profilePicture);
-
-            if (fs.existsSync(imgPath)) {
+                    if (userProfile.userId.profilePicture) {
                 try {
-                    doc.image(imgPath, { align: "center", width: 100 });
-                    doc.moveDown();
-                } catch (err) {
-                    doc.fontSize(12).text("[Profile Image Error]", { align: "center" });
-                }
-            }
+            const response = await fetch(userProfile.userId.profilePicture);
+            const arrayBuffer = await response.arrayBuffer();
+            const imgBuffer = Buffer.from(arrayBuffer);
+            doc.image(imgBuffer, { align: "center", width: 100 });
+            doc.moveDown();
+            } catch (err) {
+            doc.fontSize(12).text("[Profile Image Error]", { align: "center" });
         }
+    }
+        
 
         doc.fontSize(18).text("User Profile Document", { align: "center" }).moveDown();
         doc.fontSize(14).text(`Name : ${userProfile.userId.name || 'N/A'}`);
@@ -594,8 +590,6 @@ export const deleteUser = async (req, res) => {
 
         await Comment.deleteMany({ userId: user._id });
 
-        // Note: if you also want to delete this user's posts, uncomment:
-        // await Post.deleteMany({ userId: user._id });
 
         await User.deleteOne({ _id: user._id });
 
