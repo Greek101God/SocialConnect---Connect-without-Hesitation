@@ -7,6 +7,13 @@ import { BASE_URL } from "@/config";
 import styles from "./index.module.css";
 import { useRouter } from 'next/router'
 
+const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
+
+const getProfilePic = (pic) => {
+  if (!pic || !pic.startsWith("http")) return DEFAULT_AVATAR;
+  return pic;
+};
+
 export default function DiscoverPage() {
 
   const authState=useSelector((state)=>state.auth)
@@ -33,7 +40,7 @@ export default function DiscoverPage() {
                       <div onClick={()=>{
                         router.push(`/view_profile/${user.userId.username}`)
                       }}key={user._id} className={styles.userCard}>
-                        <img className={styles.userCard__image}src={`${BASE_URL}/uploads/${user.userId?.profilePicture || "default.jpg"}`} alt="profilePic" />
+                        <img className={styles.userCard__image} src={getProfilePic(user.userId?.profilePicture)} alt="profilePic" />
                         <div>
                           <h1>{user.userId.name}</h1>
                           <p>{user.userId.username}</p>
