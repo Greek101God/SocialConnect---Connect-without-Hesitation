@@ -4,11 +4,22 @@ A full-stack professional networking platform where users can create profiles, c
 
 🔗 **Live Demo:** [social-connect-connect-without-hesi.vercel.app](https://social-connect-connect-without-hesi.vercel.app/)
 
+![Landing page](./screenshots/landing.png)
+![Social feed](./screenshots/feed.png)
+
+---
+
+## Overview
+
+SocialConnect is a professional networking platform I built to practice designing and shipping a full-stack app end-to-end — from schema design and REST API structure to state management and deployment. It covers the core mechanics of a networking product: authenticated profiles, a social feed with engagement (likes/comments), a connection-request system, and on-demand PDF resume generation.
+
+State is managed with Redux Toolkit rather than plain Context, since profile data, the feed, and connection status all need to stay in sync across different pages without prop-drilling or redundant API calls. The connection system models each request as a simple state machine — `pending → accepted` — so a user's relationship to any other profile is always a single lookup rather than something inferred from scattered data. Resume export is handled by generating the PDF on the backend with PDFKit at request time, keeping the resume in sync with whatever the user's profile currently says instead of relying on a stale, pre-rendered file.
+
 ---
 
 ## Features
 
-- **User Authentication** — secure registration and login with bcrypt password hashing and token-based session management
+- **User Authentication** — secure registration and login with bcrypt password hashing and JWT-based session management, with the token stored client-side and attached to requests via an Axios interceptor
 - **Profile Management** — editable bio, current position, past work experience, and education history
 - **Profile Picture Upload** — image uploads via Multer
 - **Social Feed** — create posts (text + image), like posts, and browse a live feed of user activity
@@ -70,6 +81,30 @@ project/
 
 ---
 
+## API Endpoints
+
+**User & Auth routes** (from `user.routes.js`)
+
+Routes below are mounted under this router's base path (e.g. `/api/users`) — check `server.js`/`app.js` for the exact prefix used with `app.use()`.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/register` | Register a new user |
+| POST | `/login` | Log in and receive a session token |
+| POST | `/update_profile_picture` | Upload/update profile picture (via Multer + Cloudinary) |
+| POST | `/user_update` | Update core user fields |
+| POST | `/update_profile_data` | Update profile data (bio, experience, education) |
+| GET | `/get_user_and_profile` | Get the logged-in user's user + profile data |
+| GET | `/get_all_profiles` | Get all user profiles (Discover) |
+| GET | `/get_profile_based_on_username` | Get a user's profile by username |
+| POST | `/send_connection_request` | Send a connection request |
+| POST | `/accept_connection_request` | Accept a connection request |
+| GET | `/user_connection_request` | Get the current user's connections |
+| GET | `/get_my_connections_requests` | Get incoming connection requests |
+| GET | `/download_resume` | Generate and download PDF resume |
+
+---
+
 ## Getting Started (Local Setup)
 
 ### Prerequisites
@@ -110,13 +145,17 @@ The frontend will run on `http://localhost:3000` and the backend on `http://loca
 
 ---
 
+## Technical Highlights & What I Learned
+
+- **Connection request state machine** — modeled each connection as `pending → accepted` rather than a boolean, so the UI can show the correct action ("Connect", "Pending", "Message") for any pair of users from a single field instead of extra queries.
+- **PDF generation** — used PDFKit to stream-generate resumes on the backend at request time rather than pre-rendering and storing a file, so the export always reflects the user's latest profile data and no stale PDFs pile up in storage.
+- **State management** — chose Redux Toolkit over Context so post likes, comments, and connection status update predictably across the feed and profile views without re-fetching or prop-drilling between components.
+- **Auth security** — hashed passwords with bcrypt before storage and kept the JWT verification in Express middleware, so protected routes reject unauthenticated requests before any controller logic runs.
+- **Deployment split** — running the frontend on Vercel and the backend on Render meant configuring CORS explicitly for the production frontend origin, and keeping `MONGO_URI` and other secrets in each platform's own environment variable settings rather than a shared `.env`.
+
+---
+
 ## Author
 
 **Sameer Jain**
 [LinkedIn](https://linkedin.com/in/sameer-jain-714b37392) · [GitHub](https://github.com/Greek101God) · [LeetCode](https://leetcode.com/u/Greek_User)
-
----
-
-## License
-
-This project is open source and available for educational purposes.
