@@ -18,9 +18,8 @@ import {
 const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
 
 const getProfilePic = (pic) => {
-  if (!pic) return DEFAULT_AVATAR;
-  if (pic.startsWith("http")) return pic;
-  return `${BASE_URL}/uploads/${pic}`;
+  if (!pic || !pic.startsWith("http")) return DEFAULT_AVATAR;
+  return pic;
 };
 
 export default function ViewProfilePage({ userProfile, fetchError }) {
