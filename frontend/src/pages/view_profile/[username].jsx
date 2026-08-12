@@ -14,6 +14,15 @@ import {
   getAboutUser,
 } from '@/config/redux/action/authAction';
 
+
+const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
+
+const getProfilePic = (pic) => {
+  if (!pic) return DEFAULT_AVATAR;
+  if (pic.startsWith("http")) return pic;
+  return `${BASE_URL}/uploads/${pic}`;
+};
+
 export default function ViewProfilePage({ userProfile, fetchError }) {
 
   const router = useRouter();
@@ -115,7 +124,7 @@ export default function ViewProfilePage({ userProfile, fetchError }) {
           <div className={styles.backDropContainer}>
             <img
               className={styles.backDrop}
-              src={`${BASE_URL}/uploads/${userProfile.userId.profilePicture || "default.jpg"}`}
+              src={getProfilePic(userProfile.userId.profilePicture)}
               alt="backdrop"
             />
           </div>
@@ -212,7 +221,7 @@ export default function ViewProfilePage({ userProfile, fetchError }) {
                       <div className={styles.card}>
                         <div className={styles.card__profileContainer}>
                           {post.media !== "" ? (
-                            <img src={`${BASE_URL}/uploads/${post.media}`} alt="post_img" />
+                            <img src={post.media} alt="post_img" />
                           ) : null}
                         </div>
                         <p>{post.body}</p>

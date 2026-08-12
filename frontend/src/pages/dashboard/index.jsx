@@ -14,6 +14,13 @@ import { resetPostId } from "@/config/redux/reducer/postReducer";
 import { postComment } from "@/config/redux/action/postAction";
 import { deleteComment, likeComment, replyToComment } from "@/config/redux/action/postAction";
 
+const DEFAULT_AVATAR = "https://res.cloudinary.com/h0v4k0lc/image/upload/default.png";
+
+const getProfilePic = (pic) => {
+  if (!pic) return DEFAULT_AVATAR;
+  if (pic.startsWith("http")) return pic;
+  return `${BASE_URL}/uploads/${pic}`;
+};
 
 export default function Dashboard() {
   const router = useRouter();
@@ -55,11 +62,10 @@ export default function Dashboard() {
             <div className={styles.createPostContainer}>
               <img
                 className={styles.userProfile}
-                src={`${BASE_URL}/uploads/${
+                src={getProfilePic(
                   authState?.user?.userId?.profilePicture ||
-                  authState?.user?.profilePicture ||
-                  "default.jpg"
-                }`}
+                  authState?.user?.profilePicture
+                )}
                 alt="Profile_picture"
               />
               <textarea
@@ -109,7 +115,7 @@ export default function Dashboard() {
                         <div className={styles.singleCard__profileContainer} >
 
                         <img className={styles.userProfile} 
-                        src={`${BASE_URL}/uploads/${post.userId?.profilePicture || "default.jpg"}`} 
+                        src={getProfilePic(post.userId?.profilePicture)} 
                             alt="Profile_picture"/>
                         <div >
                             <div style={{display:"flex",gap:"1.2rem" , justifyContent:"space-between" }}>
@@ -212,7 +218,7 @@ export default function Dashboard() {
 
                           <div className={styles.singleComment} key={comment._id} >
                               <div className={styles.singleComment__profileContainer}>
-                                <img src={`${BASE_URL}/uploads/${comment.userId?.profilePicture || "default.jpg"}`} alt="" />
+                                <img src={getProfilePic(comment.userId?.profilePicture)} alt="" />
                                   <div className={styles.singleComment__textContent}> 
                                   <p style={{fontWeight:"bold" , fontSize:"1.05rem"}}>{comment.userId.name}</p>
                                   <p style={{color:"gray", fontSize:"0.9rem"}}>@{comment.userId.username}</p>
@@ -279,7 +285,7 @@ export default function Dashboard() {
                                     <div className={styles.repliesContainer}>
                                       {comment.replies.map((reply, ridx)=>(
                                         <div className={styles.singleReply} key={reply._id || ridx}>
-                                          <img src={`${BASE_URL}/uploads/${reply.userId?.profilePicture || "default.jpg"}`} alt="" />
+                                          <img src={getProfilePic(reply.userId?.profilePicture)} alt="" />
                                           <div>
                                             <p style={{fontWeight:"bold", fontSize:"0.9rem"}}>{reply.userId?.name}</p>
                                             <p>{reply.body}</p>
