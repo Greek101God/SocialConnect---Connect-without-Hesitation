@@ -2,7 +2,7 @@
 
 A full-stack professional networking platform where users can create profiles, connect with others, share posts, and build their professional presence — built with the MERN-adjacent stack (MongoDB, Express.js, React/Next.js, Node.js).
 
-🔗 **Live Demo:** [social-connect-connect-without-hesi.vercel.app](https://social-connect-connect-without-hesi.vercel.app)
+🔗 **Live Demo:** [social-connect-connect-without-hesi.vercel.app](https://social-connect-connect-without-hesi.vercel.app/)
 
 ---
 
@@ -90,7 +90,7 @@ npm install
 
 Create a `.env` file inside `backend/` with:
 ```env
-MONGO_URI=mongodb+srv://sameerj1080_db_user:learn_to_deploy@socialconnect.tcsedpp.mongodb.net/connectsocially?appName=socialconnect
+MONGO_URI=mongodb+srv://<username>:<password>@socialconnect.tcsedpp.mongodb.net/connectsocially?appName=socialconnect
 PORT=9090
 ```
 
